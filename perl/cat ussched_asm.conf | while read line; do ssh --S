@@ -1,0 +1,73 @@
+cat ussched_asm.conf | while read line; do ssh --StrictHostKeyChecking=no $line  "grep -E '08-13 14:1[6789]:' /home/work/search/basa_ac/log/log.bak/ac.log.2015081314 2>/dev/null| grep -P '\stm=\d+' | grep -oP '\s14:\d+:\d+' | sort | uniq -c";done >>out
+
+
+cat res_wise | awk '{a1=and(rshift($2, 0), 0xfff)>0?0:1;a2=and(rshift($2, 1), 0x1);a3=and(rshift($2, 2), 0x1);a4=and(rshift($2, 3), 0x1);a5=and(rshift($2, 4), 0x1);a6=and(rshift($2, 5), 0x1);print $1,a1,a2,a3,a4,a5,a6}'| awk '{a[$1]+=$3}END{for(time in a){print time,a[time]}}'
+
+
+cat res_wise | awk '{a1=and(rshift($2, 0), 0xfff)>0?0:1;a2=and(rshift($2, 1), 0x1);a3=and(rshift($2, 2), 0x1);a4=and(rshift($2, 3), 0x1);a5=and(rshift($2, 4), 0x1);a6=and(rshift($2, 5), 0x1);print $1,a1,a2,a3,a4,a5,a6}'| awk '{a[$1]+=$7}END{for(time in a){print time,a[time]}}'
+
+
+log=ac.log.2015081316;item="tm,chn2,ln2";freq=8;thread_num=80;div=10;export freq thread_num div item;grep " tm=" $log|perl -ane 'BEGIN{my %count;our $freq=$ENV{freq};our @item=split(/,/,$ENV{item});}{$time=$F[2];$time=substr($time,0,$freq);$count{$time}{count}++;foreach my $item(@item){($tmp)=/(?: $item)=(\d+)/;$count{$time}{$item}+=$tmp;}}END{foreach my $time(sort keys %count){print "$time   count=$count{$time}{count} ";foreach my $item(sort keys %{$count{$time}}){next if $item =~/count/; printf "%s=%d\t",$item,$count{$time}{$item}/$count{$time}{count};} printf "\n",$count{$time}{tm}/10000/$ENV{thread_num}/$ENV{div};}}'
+
+log=cache.16;item="tm,chn2,ln2";freq=8;thread_num=80;div=10;export freq thread_num div item;grep " tm=" $log|perl -ane 'BEGIN{my %count;our $freq=$ENV{freq};our @item=split(/,/,$ENV{item});}{$time=$F[0];$time=substr($time,0,$freq);$count{$time}{count}++;foreach my $item(@item){($tmp)=/(?: $item)=(\d+)/;$count{$time}{$item}+=$tmp;}}END{foreach my $time(sort keys %count){print "$time   count=$count{$time}{count} ";foreach my $item(sort keys %{$count{$time}}){next if $item =~/count/; printf "%s=%d\t",$item,$count{$time}{$item}/$count{$time}{count};} printf "\n",$count{$time}{tm}/10000/$ENV{thread_num}/$ENV{div};}}'
+
+
+log=/tmp/wa.log1;prefix="NOTICE: ";grep -P "$prefix" $log| grep -P '\stm=\d+'|perl -ne 'my $time="";my $tm=0;my $chn2=0;my $ln2=0;if(/ (10:\d+:\d+:).* tm=(\d+).*/o){{$time=$1;$tm=$2;}} if(/.* chn2=(\d+) .*/o){{$chn2=$1}} if(/.* ln2=(\d+).*/o){{$ln2=$1}}; END{{printf("%s %s %s %s\n", $time, $tm, $chn2, $ln2)}}'
+
+
+log=/tmp/wa.log1;prefix="NOTICE: ";grep -P "$prefix" $log| grep -P '\stm=\d+'|perl -ane 'my $time="";my $tm=0;my $chn2=0;my $ln2=0;if(/ (\d+:\d+:\d+:).* tm=(\d+).*/o){{$time=\$1;$tm=\$2;}} if(/.* chn2=(\d+) .*/o){{$chn2=$1}} if(/.* ln2=(\d+).*/o){{$ln2=$1}}; printf("%s %s %s %s\n", $time, $tm, $chn2, $ln2)'
+
+
+
+
+log=/tmp/wa.log1;item="tm,chn2,ln2";freq=8;thread_num=80;div=10;export freq thread_num div item;grep " tm=" $log|perl -ane 'BEGIN{my %count;our $freq=$ENV{freq};our @item=split(/,/,$ENV{item});}{$time=$F[2];$time=substr($time,0,$freq);$count{$time}{count}++;foreach my $item(@item){($tmp)=/(?: $item)=(\d+)/;$count{$time}{$item}+=$tmp;}}END{foreach my $time(sort keys %count){print "$time   count=$count{$time}{count} ";foreach my $item(sort keys %{$count{$time}}){next if $item =~/count/; printf "%s=%d\t",$item,$count{$time}{$item}/$count{$time}{count};} printf "\n",$count{$time}{tm}/10000/$ENV{thread_num}/$ENV{div};}}'
+
+log=/tmp/wa.log1;item="tm,chn2,ln2";freq=8;export freq item; grep -P "$prefix" $log | grep -P ' tm=' | perl -ane 'BEGIN{our $freq=$ENV{freq}; our @item=split(/,/,$ENV{item});}{$time=$F[2]; $time=substr($time,0,$freq); print "$time\t";foreach my $it(@item){($tmp)=/(?: $it)=(\d+)/; printf("%s=%d\t",$it,$tmp);} printf("\n");}'
+
+
+grep -P \"$prefix\" $file|grep ' tm='|perl -ane 'BEGIN{our \$freq=$ENV{freq};our @item=split(/,/,\$ENV{item});}{\$time=\$F[2];\$time=substr(\$time,0,\$freq);print \"\$time\t\";foreach my \$it(@item){(\$tmp)=/(?: \$it)=(\d+)/; printf(\"%s=%d\t\",\$it,\$tmp);} printf(\"\n\");}'
+
+log=./ac.log;prefix=" 22:00:";item="tm,chn2,ln2";freq=6;export freq item; grep -P "$prefix" $log | grep -P ' tm=' | perl -ane 'BEGIN{our \$freq=\$ENV{freq}; our @item=split(/,/,\$ENV{item});}{\$time=\$F[2]; \$time=substr(\$time,0,\$freq); print \"\$time\t\";foreach my \$it(@item){(\$tmp)=/(?: \$it)=(\d+)/; printf(\"%s=%d\t\",\$it,\$tmp);} printf(\"\n\");}'
+
+
+item='tm,chn2,ln2';freq=8;thread_num=80;div=10;export freq thread_num div item; cat $log|perl -ane 'BEGIN{my %count;our $freq=$ENV{freq};our @item=split(/,/,$ENV{item});}{$time=$F[0];$time=substr($time,0,$freq);$count{$time}{count}++;foreach my $item(@item){($tmp)=/(?: $item)=(\d+)/;$count{$time}{$item}+=$tmp;}}END{foreach my $time(sort keys %count){print "$time   count=$count{$time}{count} ";foreach my $item(sort keys %{$count{$time}}){next if $item =~/count/; printf "%s=%d\t",$item,$count{$time}{$item}/$count{$time}{count};} printf "\n",$count{$time}{tm}/10000/$ENV{thread_num}/$ENV{div};}}'
+
+
+
+
+
+log=data/raw_query/*;item="tm,lbt,chn2,ln2";freq=8;export freq item;cat $log|perl -ane 'BEGIN{my %count;our $freq=$ENV{freq};our @item=split(/,/,$ENV{item});}{$time=$F[0];$time=substr($time,0,$freq);$count{$time}{count}++;foreach my $item(@item){($tmp)=/(?:\s$item)=(\d+)/;$count{$time}{$item}+=$tmp;}}END{foreach my $time(sort keys %count){print "$time\tcount=$count{$time}{count} ";foreach my $item(sort keys %{$count{$time}}){next if $item =~/count/; printf "%s=%d\t",$item,$count{$time}{$item}/$count{$time}{count};} printf("avg=%f\t", $count{$time}{"chn2"}/$count{$time}{"ln2"});printf "\n";}}'
+
+
+
+
+
+
+
+cat conf/iplist.sh | ./parallel sh get_raw_query_item.sh -f /home/work/search/basa_ac/log/log.bak/ac.log.2015081709
+
+
+
+
+
+grep -P \" 09:\d+:\d+: \" $log|grep -P \"\stm=\"|perl -ane 'BEGIN{my %count;our \$freq=\$ENV{freq};our @item=split(/,/,\$ENV{item});}{\$time=\$F[2];\$time=substr(\$time,0,\$freq);\$count{\$time}{count}++;foreach my \$item(@item){(\$tmp)=/(?:\s\$item)=(\d+)/;\$count{\$time}{\$item}+=\$tmp;}}END{foreach my \$time(sort keys %count){print \"\$time\tcount=\$count{\$time}{count}\t\";foreach my \$item(sort keys %{\$count{\$time}}){next if \$item =~/count/; printf \"%s=%d\t\",\$item,\$count{\$time}{\$item}/\$count{\$time}{count};} printf \"\n\";}}'
+
+
+
+log=ac.log.2015081717; prefix=" 17:\d+:\d+:";item="tm,lbt";freq=6;thread_num=80;div=10;export freq thread_num div item;grep -P "$prefix" $log|grep -P "\stm="|perl -ane 'BEGIN{my %count;our $freq=$ENV{freq};our @item=split(/,/,$ENV{item});}{$time=$F[2];$time=substr($time,0,$freq);$count{$time}{count}++;foreach my $item(@item){($tmp)=/(?:\s$item)=(\d+)/;$count{$time}{$item}+=$tmp;}}END{foreach my $time(sort keys %count){print "$time\tcount=$count{$time}{count} ";foreach my $item(sort keys %{$count{$time}}){next if $item =~/count/; printf "%s=%d\t",$item,$count{$time}{$item}/$count{$time}{count};} printf "\n",$count{$time}{tm}/10000/$ENV{thread_num}/$ENV{div};}}'
+
+
+
+for bcgroup in `ls bcgrouplist/sh`; do cat $bcgroup | grep -oP '(\d+.\d+.\d+.\d+)' | ./parallel -j400 sh map_reduce_all_ac_tm.sh -f "/home/work/opdir/backup/log.bak" -g $bcgroup; done;
+
+
+
+
+for file in `ls bcgrouplist/sh/bcgroup4`;do bcgroup=${file##*/}; echo "start get $bcgroup data";cat $file|grep -oP '(\d+.\d+.\d+.\d+)'|./parallel -j 400 sh -x map_reduce_all_ac_tm.sh -g $bcgroup -f /home/work/opdir/backup/log.bak/bc.log.201508181500;done;
+
+
+
+sh -x map_reduce_all_ac_tm.sh -f /home/work/opdir/backup/log.bak/bc.log.201508181500 -g bcgroup4 10.201.16.38
+
+
+log=./ac.log;prefix=" 17:40:\d+:";item="tm,rc";freq=8;thread_num=80;div=10;export freq thread_num div item;grep -P "$prefix" $log|grep -P "\stm="|perl -ane 'BEGIN{my %count;our $freq=$ENV{freq};our @item=split(/,/,$ENV{item});}{$time=$F[2];$time=substr($time,0,$freq);$count{$time}{count}++;foreach my $item(@item){($tmp)=/(?:\s$item)=(\d+)/;$count{$time}{$item}+=$tmp;}}END{foreach my $time(sort keys %count){print "$time\tcount=$count{$time}{count} ";foreach my $item(sort keys %{$count{$time}}){next if $item =~/count/; printf "%s=%d\t",$item,$count{$time}{$item}/$count{$time}{count};} printf "\n",$count{$time}{tm}/10000/$ENV{thread_num}/$ENV{div};}}'
