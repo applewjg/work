@@ -1,0 +1,1 @@
+g++ -o hello server.2.cpp -I../../ps/se/libheartbeat/output/include -I../../lib2-64/ullib/include/ /home/users/wangjingui/work/svnroot/ps/se/libheartbeat/output/lib/libheartbeat.a /home/users/wangjingui/work/svnroot/lib2-64/ullib/lib/libullib.a -lpthread -lm -lcrypto ../../public/mcpack/output/lib/libmcpack.a

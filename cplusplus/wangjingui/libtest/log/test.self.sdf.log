@@ -1,0 +1,16 @@
+SDF_LOG: LEVEL:2 09-07 22:15:53: log/test. * 140667085948672 heartbeat server listen at 4400
+SDF_LOG: LEVEL:2 09-07 22:15:53: log/test. * 140667085948672 heartbeat server send from 4401
+SDF_LOG: LEVEL:2 09-07 22:15:53: log/test. * 140667085948672udp hb stop.port(4400), pid(27381)
+SDF_LOG: LEVEL:2 09-07 22:15:53: log/test. * 140667085948672 hb server stoped
+SDF_LOG: LEVEL:2 09-07 22:18:57: log/test. * 139796105938688 heartbeat server listen at 4400
+SDF_LOG: LEVEL:2 09-07 22:18:57: log/test. * 139796105938688 heartbeat server send from 4401
+SDF_LOG: LEVEL:2 09-07 22:18:57: log/test. * 139796105938688udp hb stop.port(4400), pid(2028)
+SDF_LOG: LEVEL:2 09-07 22:18:57: log/test. * 139796105938688 hb server stoped
+SDF_LOG: LEVEL:2 09-07 22:23:47: log/test. * 140021899138816 heartbeat server listen at 4400
+SDF_LOG: LEVEL:2 09-07 22:23:47: log/test. * 140021899138816 heartbeat server send from 4401
+SDF_LOG: LEVEL:2 09-07 22:23:47: log/test. * 140021899138816udp hb stop.port(4400), pid(14276)
+SDF_LOG: LEVEL:2 09-07 22:23:47: log/test. * 140021899138816 hb server stoped
+SDF_LOG: LEVEL:2 09-07 22:26:20: log/test. * 140082286929664 heartbeat server listen at 4400
+SDF_LOG: LEVEL:2 09-07 22:26:20: log/test. * 140082286929664 heartbeat server send from 4401
+SDF_LOG: LEVEL:2 09-07 22:31:56: log/test. * 140390173890304 heartbeat server listen at 4400
+SDF_LOG: LEVEL:2 09-07 22:31:56: log/test. * 140390173890304 heartbeat server send from 4401
