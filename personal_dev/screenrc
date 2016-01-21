@@ -1,0 +1,42 @@
+##set the startup message
+startup_message off
+##term type
+term linux
+##set a biger buffer
+defscrollback 4096
+##shell title
+shelltitle "$|work"
+##session name
+#sessionname "ala"
+##hard status
+hardstatus alwayslastline '%{= kG}[ %{G}%c:%s %{g}][%-Lw%{= BW}%50>%n%f* %t%{-}%+Lw%<][ %{C}(F7)Detach (F8)Kill (F9)New (F10)Rename (F11)Pre (F12)Next %{g}]'
+##auto detach
+autodetach on
+##set message timeout to one second
+msgwait 1
+
+vbell off
+
+#default shell
+shell bash
+##initial apps to run
+    screen
+    screen
+    select 0
+##short cut key binding
+#bind F1 to select 1
+    bindkey -k k1 select 1
+#bind F7 to detach screen session from this terminal
+    bindkey -k k7 detach
+#bind F8 to kill current screen window
+    bindkey -k k8 kill
+#bind F9 to create a new screen
+    bindkey -k k9 screen
+#bind F10 to rename current screen window
+    bindkey -k k; title
+#bind F11 to move to the previous window
+    bindkey -k F1 prev
+#bind F12 to move to the next window
+    bindkey -k F2 next
+
+termcapinfo linux 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm' # 开启 256 色模式
