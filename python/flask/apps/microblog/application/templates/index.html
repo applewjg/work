@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script src="{{url_for('static', filename='jquery-1.12.0.js')}}"></script> 
+        <script type=text/javascript> 
+        var $SCRIPT_ROOT = {{request.script_root|tojson|safe}};
+        </script>
+        <script type=text/javascript>
+        $(function() {
+            function submit_form(e) {
+                $.getJSON($SCRIPT_ROOT + '/add', {
+                    a: $('input[name="a"]').val(),
+                    b: $('input[name="b"]').val(),
+                    now: new Date().getTime()
+                },
+                function(data) {
+                    $('#result').text(data.result);
+                });
+            };
+            // 绑定click事件
+            $('#calculate').bind('click', submit_form);
+        });
+        </script>
+    </head>
+
+<title>Hello from Flask</title>
+{% if name %}
+  <h1>Hello {{ name }}!</h1>
+{% else %}
+  <h1>Hello World!</h1>
+{% endif %}
+
+<body>
+<p>
+    <input type=text size=5 name=a> +
+    <input type=text size=5 name=b> =
+    <span id=result>?</span>
+</p>
+<p><input type="button" id="calculate" value="计算"></p>
+</body>
+</html>
